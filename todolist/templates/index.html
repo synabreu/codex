@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+
+{% block title %}ToDo List{% endblock %}
+
+{% block content %}
+<h1 class="mb-4">할 일 목록</h1>
+
+<form method="post" action="{{ url_for('index') }}" class="mb-4 d-flex">
+    <input type="text" name="title" class="form-control me-2" placeholder="새 할 일을 입력하세요" required>
+    <button type="submit" class="btn btn-primary">추가</button>
+</form>
+
+<ul class="list-group">
+    {% for task in tasks %}
+    <li class="list-group-item d-flex justify-content-between align-items-center">
+        <div>
+            {% if task.completed %}
+                <s>{{ task.title }}</s>
+            {% else %}
+                {{ task.title }}
+            {% endif %}
+        </div>
+        <div>
+            <a href="{{ url_for('complete', task_id=task.id) }}" class="btn btn-sm {% if task.completed %}btn-secondary{% else %}btn-success{% endif %} me-2">
+                {% if task.completed %}취소{% else %}완료{% endif %}
+            </a>
+            <a href="{{ url_for('delete', task_id=task.id) }}" class="btn btn-sm btn-danger">삭제</a>
+        </div>
+    </li>
+    {% endfor %}
+</ul>
+{% endblock %}
